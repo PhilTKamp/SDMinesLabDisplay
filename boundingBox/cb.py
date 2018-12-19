@@ -10,7 +10,7 @@ fx, fy = -1, -1
 
 # Image callback function
 def drawBox(event, x, y, flags, param):
-	global ix, iy, fx, fy, drawing, frame
+	global ix, iy, fx, fy, drawing
 	if event == cv2.EVENT_LBUTTONDOWN:
 		drawing = True
 		ix, iy = x, y
