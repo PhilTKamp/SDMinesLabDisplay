@@ -15,8 +15,8 @@ def dynamicColorMask():
 	sGraph.openGraph()
 	vGraph.openGraph()
 
-	mean = np.array([0, 0, 0])
-	std = np.array([0, 0, 0])
+	minVals = np.array([255, 255, 255])
+	maxVals = np.array([0, 0, 0])
 
 	ret, frame = cap.read()
 
@@ -34,18 +34,18 @@ def dynamicColorMask():
 
 		hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 		
+		lowerRange = np.array([minVals[0], minVals[1], minVals[2]])
+		upperRange = np.array([maxVals[0], maxVals[1], maxVals[2]])
 
 		if cb.drawing == True:
 			cv2.rectangle(frame, (cb.ix, cb.iy), (cb.fx, cb.fy), (255, 204, 51), 1)
 			cutImg = hsv[cb.ix:cb.fx, cb.iy:cb.fx]
 			displayHistograms(cutImg, hGraph, sGraph, vGraph)
 			mean, std = cv2.meanStdDev(cutImg)
-			print "The mean is: \n", mean
-			print "The StdDev is: \n", std
+			for i in range(0, 3, 1):
+				minVals[i] = min(minVals[i], mean[i] - std[i])
+				maxVals[i] = max(maxVals[i], mean[i] + std[i])
 
-		
-		lowerRange = np.array([mean[0]-std[0], mean[1]-std[1], mean[2]-std[2]])
-		upperRange = np.array([mean[0]+std[0], mean[1]+std[1], mean[2]+std[2]])
 
 		mask = cv2.inRange(hsv, lowerRange, upperRange)
 

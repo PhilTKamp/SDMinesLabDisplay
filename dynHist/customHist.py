@@ -25,7 +25,10 @@ class Graph:
 		self.drawAxis()
 
 		# Normalizes all points on y-axis
-		heightScalar = 200 / max(data)
+		if(max(data) != 0):
+			heightScalar = 200 / max(data)
+		else:
+			heightScalar = 1
 
 		xIndex = 50;
 		points = np.array([50,50])
