@@ -51,8 +51,13 @@ def dynamicColorMask():
 			mean, std = cv2.meanStdDev(cutImg)
 
 			for i in range(0, 3, 1):
-				minVals[i] = min(minVals[i], mean[i] - std[i])
-				maxVals[i] = max(maxVals[i], mean[i] + std[i])
+				#Uses a new filter for the mask each time an ROI is chosen
+				minVals[i] = mean[i] - std[i]
+				maxVals[i] = mean[i] + std[i]
+
+				# Uncomment for a cascading filter
+				# minVals[i] = min(minVals[i], mean[i] - std[i])
+				# maxVals[i] = max(maxVals[i], mean[i] + std[i])
 
 
 		# Generates mask based on range, applies mask
